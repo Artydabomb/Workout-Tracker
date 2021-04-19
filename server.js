@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
 
-const db = require("./models");
+const db = require("../models");
 
 const app = express();
 
@@ -15,7 +15,26 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populate", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://artydabomb:artydabomb@cluster0-shard-00-00.vf2vj.mongodb.net:27017,cluster0-shard-00-01.vf2vj.mongodb.net:27017,cluster0-shard-00-02.vf2vj.mongodb.net:27017/WorkoutsDB?ssl=true&replicaSet=atlas-xo9nbh-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true });
+
+var exercises = [{
+  day: new Date().setDate(new Date().getDate() - 10),
+  exercises: [
+    {
+      _id: "sld;foj2498fj3284",
+      type: "resistance",
+      name: "Bicep Curl",
+      duration: 20,
+      weight: 100,
+      reps: 10,
+      sets: 4
+    }
+  ]
+}]
+
+app.get("/api/workouts", (req, res) => {
+  res.send(exercises);
+});
 
 // db.Library.create({ name: "Campus Library" })
 //   .then(dbLibrary => {
