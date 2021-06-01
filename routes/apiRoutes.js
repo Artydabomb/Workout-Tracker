@@ -4,22 +4,6 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI || "mongodb://artydabomb:artydabomb@cluster0-shard-00-00.vf2vj.mongodb.net:27017,cluster0-shard-00-01.vf2vj.mongodb.net:27017,cluster0-shard-00-02.vf2vj.mongodb.net:27017/WorkoutsDB?ssl=true&replicaSet=atlas-xo9nbh-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true });
 const db = require("../models");
 
-
-// var exercises = [{
-//   day: new Date().setDate(new Date().getDate() - 10),
-//   exercises: [
-//     {
-//       _id: "sld;foj2498fj3284",
-//       type: "resistance",
-//       name: "Bicep Curl",
-//       duration: 20,
-//       weight: 100,
-//       reps: 10,
-//       sets: 4
-//     }
-//   ]
-// }]
-
 //Route to get completed workouts
 router.get("/api/workouts", (req, res) => {
     db.Workout.find().then(dbWorkout => {
@@ -43,14 +27,27 @@ router.put("/api/workouts/:id", (req, res) => {
         })
 });
 
-//Route to create workout 
+//Route to create new workout 
 router.post("/api/workouts", (req, res) => {
     // var obj = req.body;
     // obj.day = new Date();
     // console.log(obj);
+    console.log(req.body);
+
     db.Workout.create(req.body).then(dbExercise => {
-        console.log(req.body);
         res.json(dbExercise);
+    })
+        .catch(err => {
+            res.json(err);
+        })
+});
+
+// Making route to workout/range page
+//Route to get completed workouts
+router.get("/api/workouts/range", (req, res) => {
+    db.Workout.find().then(dbWorkout => {
+        // console.log(dbWorkout);
+        res.json(dbWorkout);
     })
         .catch(err => {
             res.json(err);
